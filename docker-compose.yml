@@ -1,0 +1,86 @@
+version: "3.7"
+
+networks:
+  checkin-backend-network:
+volumes:
+  mysql_data: {}
+
+services:
+
+  ### Golang ################################################
+  api:
+    container_name: ${APP_NAME}_api
+    build:
+      context: .
+      dockerfile: docker/golang/prod/Dockerfile
+    image: ${APP_NAME}:latest
+    restart: on-failure
+    volumes:
+      - .:/usr/src/app/
+    command: bash -c "./server server"
+    depends_on:
+      - mysql
+    networks:
+      - checkin-backend-network
+
+  ### Golang consumer ################################################
+  consumer:
+    image: ${APP_NAME}:latest
+    container_name: ${APP_NAME}_consumer
+    restart: on-failure
+    volumes:
+      - .:/usr/src/app/
+    command: bash -c "./server consumer"
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - checkin-backend-network
+
+  ### Mysql ################################################
+  mysql:
+    image: mysql:8.0
+    container_name: ${APP_NAME}_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_HOST_PORT}:${DB_PORT}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - checkin-backend-network
+
+  ### Redis ################################################
+  redis:
+    image: redis:5.0-alpine
+    container_name: ${APP_NAME}_redis
+    volumes:
+      - ./docker/redis:/data
+    networks:
+      - checkin-backend-network
+
+  ### NGINX Server #########################################
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    container_name: ${APP_NAME}_nginx
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/entrypoint.sh:/etc/nginx/entrypoint.sh
+    ports:
+      - ${NGINX_HOST_PORT}:80
+    environment:
+      - API_URL=${API_URL}
+      - API_PORT=${API_PORT}
+      - CONSUMER_PORT=${CONSUMER_PORT}
+    command: /bin/sh -c "/etc/nginx/conf.d/entrypoint.sh"
+    depends_on:
+      - api
+    networks:
+      - checkin-backend-network

@@ -1,0 +1,9 @@
+vendor/
+.env
+.idea/
+docker/mysql/
+docker/redis/
+.DS_Store
+cmd/server/server
+docker/nginx/conf.d
+!docker/nginx/conf.d/conf.template
