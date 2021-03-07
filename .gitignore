@@ -1,9 +1,12 @@
-vendor/
 .env
 .idea/
-docker/mysql/
-docker/redis/
+docker/mysql/data/
+docker/redis/data/
 .DS_Store
 cmd/server/server
-docker/nginx/conf.d
-!docker/nginx/conf.d/conf.template
+
+docker/nginx/conf.d/*
+!docker/nginx/conf.d/.gitkeep
+
+docker/nginx/auth/*
+!docker/nginx/auth/.gitkeep

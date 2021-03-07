@@ -3,7 +3,6 @@ package user
 import (
 	"golang-skeleton/domain/user/entity"
 	"golang-skeleton/dto"
-	"golang-skeleton/model"
 	"golang-skeleton/repository"
 	"golang-skeleton/utils"
 )

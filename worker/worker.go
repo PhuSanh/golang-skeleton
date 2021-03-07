@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/jrallison/go-workers"
 	"golang-skeleton/config"
+	"strconv"
 )
 
 func NewWorker(cfg *config.Config) {
@@ -13,7 +14,7 @@ func NewWorker(cfg *config.Config) {
 		// instance of the database
 		"database": "0",
 		// number of connections to keep open with redis
-		"pool": cfg.Redis.Pool,
+		"pool": strconv.Itoa(cfg.Redis.Pool),
 		// unique process id for this instance of workers (for proper recovery of inprogress jobs on crash)
 		"process": "1",
 	})

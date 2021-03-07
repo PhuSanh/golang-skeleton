@@ -1,0 +1,12 @@
+server {
+    listen 80;
+
+    server_name ${PMA_URL};
+
+    location / {
+        proxy_pass http://sev_phpmyadmin;
+        auth_basic "Basic Authentication";
+        auth_basic_user_file "/etc/nginx/.htpasswd";
+    }
+
+}

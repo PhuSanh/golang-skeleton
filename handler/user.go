@@ -37,7 +37,7 @@ func (h *Handler) Login(c echo.Context) error {
 
 	claims := &dto.JWTCustomClaims{
 		Username: user.Username,
-		ID:       user.ID,
+		ID:       user.UserID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Minute * time.Duration(h.cfg.Jwt.ExpireInMinute)).Unix(),
 		},

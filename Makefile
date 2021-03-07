@@ -3,19 +3,15 @@ include .env
 GOCMD=go
 
 dev-build:
-	docker network create -d bridge ${APP_NAME}_network || true
-	docker-compose -f docker-compose-dev.yml up --build
+	docker-compose -f docker-compose.local.yml up --build
 
 prd-build:
-	docker network create -d bridge ${APP_NAME}_network || true
 	docker-compose build
 
 dev-run:
-	docker network create -d bridge ${APP_NAME}_network || true
-	docker-compose -f docker-compose-dev.yml up
+	docker-compose -f docker-compose.local.yml up
 
 prd-run:
-	docker network create -d bridge ${APP_NAME}_network || true
 	docker-compose up -d
 
 stop:
