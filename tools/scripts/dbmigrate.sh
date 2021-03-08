@@ -12,7 +12,11 @@ fi
 
 # Source file .env so that dbconfig.yml can use env variable
 # https://gist.github.com/mihow/9c7f559807069a03e302605691f85572
-export $(grep -v '^#' .env | xargs)
+### Load .env
+if [ -f .env ]
+then
+  export $(cat .env | sed 's/#.*//g' | xargs)
+fi
 
 if [ "$OPS" == "status" ]
 then

@@ -12,7 +12,7 @@ services:
     container_name: ${APP_NAME}_api
     build:
       context: .
-      dockerfile: docker/golang/dev/Dockerfile
+      dockerfile: docker/golang/prod/Dockerfile
     image: ${APP_NAME}:latest
     restart: on-failure
     volumes:
