@@ -22,6 +22,7 @@ docker-compose -f docker-compose.prod.yml up -d
 ```
 docker exec -it sev_phalcon bash script/setup/after.sh
 ```
+- Install go library
 - Run migration
 
 Note: remember to enable go mod in Goland for development
