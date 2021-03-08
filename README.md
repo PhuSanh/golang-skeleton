@@ -1,11 +1,30 @@
-## Quick start
-1. Search `golang-skeleton` in project and rename it to your project name
-2. RUN `cp .env.example .env`
-3. RUN `make dev-build` to download package and build docker  
-    - Note: You can encounter mysql connection error in the first time. Please stop process and RUN `make dev-run`
-4. Add `127.0.0.1 local.api.vn` to file /etc/hosts
-5. Access `local.api.vn` for API
-6. Access `local.api.vn/swagger/index.html` for swagger documentation
+### Setup
+1. Update file .env
+``` 
+cp .env.example .env
+``` 
+2. Setup before start
+```
+bash script/setup/before.sh
+```
+- Setup nginx conf
+- Setup nginx basic auth for phpmyadmin
+- Create init db file
+3. Add host in /etc/hosts
+```
+127.0.0.1 {server_name} {pma_server_name}
+```
+4. Run docker compose
+```
+docker-compose -f docker-compose.prod.yml up -d
+```
+5. Setup after start
+```
+docker exec -it sev_phalcon bash script/setup/after.sh
+```
+- Run migration
+
+Note: remember to enable go mod in Goland for development
 
 
 ## Start

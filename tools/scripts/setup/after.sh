@@ -6,6 +6,9 @@ then
   export $(cat .env | sed 's/#.*//g' | xargs)
 fi
 
+### Install go package
+go get -u -d ./...
+
 ### Run migration
 if [ ${APP_ENV} == 'production' ]; then
   bash ./tools/scripts/dbmigrate.sh production up 1000
